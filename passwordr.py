@@ -48,7 +48,7 @@ class Passwordr(object):
 
 		self.length = len(final);
 
-		return final;
+		return str(final);
 
 	def get_special(self):
 		_seed = "_?+-.<?;:&#@";
@@ -60,27 +60,42 @@ class Passwordr(object):
 	def rediscombobulator(self, source):
 		_unique = self.array_unique(source);
 
-		print len(_unique);
+		if(len(_unique) == self.length):
+			_diff = self.length - len(_unique);
+			_special = self.get_special();
+			
+			if(_diff > 0):
+				_unique.insert(_diff, _special);
+			else :
+				_unique.insert(self.get_random_pos_from(_unique), _special);
+
+			_unique.pop();
+
+		return _unique;
 
 	"""chooses a random starting point for randomizer()'s string"""
 	def startmajigger(self):
-		seed = "123456789"; #todo: refactor so it takes the length of the password string instead of these random numbers
+		_seed = "123456789"; #todo: refactor so it takes the length of the password string instead of these random numbers
 
-		return "".join(random.sample(seed, len(seed)))[:1]
+		return "".join(random.sample(_seed, len(_seed)))[:1]
+
+	def get_random_pos_from(self, _input):
+		return random.randint(1,len(_input)) + 1;
 
 	"""turns output from randomizer() and rediscombobulator() into a string"""
 	def confusitizer(self):
 		_output = self.randomizer();
-		_rediscombobulated = [];
+		_rediscombobulated = list();
 
 		if(len(_output) <= self.length):
 			_special = self.get_special();
 			_source_array = list(_output);
+			_rediscombobulated = self.rediscombobulator(_source_array);
+			_rediscombobulated.insert(self.get_random_pos_from(_rediscombobulated), _special);
 
-			if(_special in _source_array):
-				print "nope"
-		
-		return _output;
+			_output = "".join(_rediscombobulated);
+
+		print _output;
 
 			
 # Instantiate the Passwordr class
