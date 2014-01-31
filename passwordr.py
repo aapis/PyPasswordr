@@ -41,7 +41,7 @@ class Passwordr(object):
 		_tmp = {
 			"shuffled": "".join(random.sample(seed, len(seed))),
 			"hash": self.password,
-			"start": int(self.startmajigger()),
+			"start": self.get_random_pos_from(self.password),
 		};
 
 		final = (_tmp["shuffled"] + _tmp["hash"])[_tmp["start"]:(self.length + _tmp["start"])];
@@ -72,12 +72,6 @@ class Passwordr(object):
 			_unique.pop();
 
 		return _unique;
-
-	"""chooses a random starting point for randomizer()'s string"""
-	def startmajigger(self):
-		_seed = "123456789"; #todo: refactor so it takes the length of the password string instead of these random numbers
-
-		return "".join(random.sample(_seed, len(_seed)))[:1]
 
 	def get_random_pos_from(self, _input):
 		return random.randint(1,len(_input)) + 1;
