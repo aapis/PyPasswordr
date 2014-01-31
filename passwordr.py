@@ -1,17 +1,13 @@
-import sys
-import fileinput
-import hashlib
-import time
-import random
-import string
+import sys, hashlib, time, random, string
 
-#if __name__ == "__main__":
 class Passwordr(object):
 	"""Initialize the class"""
-	def __init__(self, base, length=32):
+	def __init__(self, base="", length=32):
 		super(Passwordr, self).__init__();
 
-		if(base):
+		if(sys.argv[1]):
+			self.base = sys.argv[1];
+		else:
 			self.base = base;
 
 		if(sys.argv[2]):
@@ -24,8 +20,13 @@ class Passwordr(object):
 		return self.confusitizer();
 
 	"""generate a new hash and return the string value"""
-	def make_hash(self):
-		return hashlib.sha224(str(int(time.time()))).hexdigest();
+	def make_hash(self, length=0):
+		_str = hashlib.sha224(str(int(time.time()))).hexdigest();
+
+		if(length > 0 and len(_str) > length):
+			_str = "".join(_str)[:length];
+
+		return _str;
 
 	"""get the unique values from an array"""
 	"""http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order"""
@@ -56,20 +57,20 @@ class Passwordr(object):
 		return "".join(random.sample(_seed, len(_seed)))[:1];
 
 
-	"""takes confusitizer()'s array and adds some new random characters to it, depending on the length of the array"""
+	"""takes confusitizer()'s array and a new random character to it, depending on the length of the array"""
 	def rediscombobulator(self, source):
 		_unique = self.array_unique(source);
 
-		if(len(_unique) == self.length):
+		if(len(_unique) < self.length):
 			_diff = self.length - len(_unique);
 			_special = self.get_special();
-			
 			if(_diff > 0):
+				_diff_chars = list(self.make_hash(_diff));
+				print len(_diff_chars), len(_unique)
 				_unique.insert(_diff, _special);
+				_unique.extend(_diff_chars);
 			else :
 				_unique.insert(self.get_random_pos_from(_unique), _special);
-
-			_unique.pop();
 
 		return _unique;
 
@@ -77,7 +78,7 @@ class Passwordr(object):
 		return random.randint(1,len(_input)) + 1;
 
 	"""turns output from randomizer() and rediscombobulator() into a string"""
-	def confusitizer(self):
+	def confusitizer(self, ret=False):
 		_output = self.randomizer();
 		_rediscombobulated = list();
 
@@ -86,11 +87,15 @@ class Passwordr(object):
 			_source_array = list(_output);
 			_rediscombobulated = self.rediscombobulator(_source_array);
 			_rediscombobulated.insert(self.get_random_pos_from(_rediscombobulated), _special);
-
 			_output = "".join(_rediscombobulated);
 
-		print _output;
 
-			
+		print len(_output)
+		if(ret):
+			return _output;
+		else:
+			print _output;
+
+
 # Instantiate the Passwordr class
-pw = Passwordr('test', 10)
+pw = Passwordr()
