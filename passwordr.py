@@ -19,14 +19,12 @@ class Passwordr(object):
 		else:
 			self.length = length;
 
-		self.password = self.makeHash();
+		self.password = self.make_hash();
 
-		_test = self.randomizer();
-
-		print self.rediscombobulator(_test);
+		return self.confusitizer();
 
 	"""generate a new hash and return the string value"""
-	def makeHash(self):
+	def make_hash(self):
 		return hashlib.sha224(str(int(time.time()))).hexdigest();
 
 	"""get the unique values from an array"""
@@ -35,7 +33,7 @@ class Passwordr(object):
 		_seen = set();
 		_seen_add = _seen.add;
 
-		return [_x for _x in array if _x not in _seen and not _seen_add(_x)];
+		return [_x for _x in arr if _x not in _seen and not _seen_add(_x)];
 
 	"""gets the ball rolling by taking a randomly generated string and running it through a hash generator (sha1 in this case)"""
 	def randomizer(self):
@@ -52,6 +50,12 @@ class Passwordr(object):
 
 		return final;
 
+	def get_special(self):
+		_seed = "_?+-.<?;:&#@";
+
+		return "".join(random.sample(_seed, len(_seed)))[:1];
+
+
 	"""takes confusitizer()'s array and adds some new random characters to it, depending on the length of the array"""
 	def rediscombobulator(self, source):
 		_unique = self.array_unique(source);
@@ -66,7 +70,17 @@ class Passwordr(object):
 
 	"""turns output from randomizer() and rediscombobulator() into a string"""
 	def confusitizer(self):
-		pass
+		_output = self.randomizer();
+		_rediscombobulated = [];
+
+		if(len(_output) <= self.length):
+			_special = self.get_special();
+			_source_array = list(_output);
+
+			if(False == _special in _source_array):
+				print "nope"
+		
+		return _output;
 
 			
 # Instantiate the Passwordr class
