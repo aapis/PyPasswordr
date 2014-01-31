@@ -6,6 +6,11 @@ class Passwordr(object):
 
 		super(Passwordr, self).__init__();
 
+		if(len(sys.argv) == 4):
+			_ret = sys.argv[3];
+		else:
+			_ret = False;
+
 		if(sys.argv[1]):
 			self.base = sys.argv[1];
 		else:
@@ -18,7 +23,7 @@ class Passwordr(object):
 
 		self.password = self.make_hash();
 
-		return self.confusitizer();
+		return self.confusitizer(_ret);
 
 	def make_hash(self, length=0):
 		"""generate a new hash and return the string value"""
@@ -62,7 +67,7 @@ class Passwordr(object):
 		_minNumberChars = 5;
 
 		if(rand):
-			num = random.randint(1, inputLen) - _minNumberChars;
+			num = random.randint(1, inputLen);
 
 		return random.sample(_seed, len(_seed))[:num];
 
@@ -70,11 +75,9 @@ class Passwordr(object):
 		"""takes confusitizer()'s array and a new random character to it, depending on the length of the array"""
 
 		_unique = self.array_unique(source);
-
 		_diff = self.length - len(_unique);
-		#_special = self.get_specials(rand=True, inputLen=self.length);
 
-		if(_diff < 0):
+		if(_diff > 0):
 			_diff_chars = list(self.make_hash(_diff));
 			_unique.extend(_diff_chars);
 
@@ -85,30 +88,29 @@ class Passwordr(object):
 
 		if(_input):
 			return random.randint(1,len(_input)) + 1;
+		else:
+			return None;
 
 	def confusitizer(self, ret=False):
 		"""turns output from randomizer() and rediscombobulator() into a string"""
 
 		_output = self.randomizer();
-		_rediscombobulated = list();
+		_special = self.get_specials(rand=True, inputLen=5);
+		_source_array = list(_output);
+		_rediscombobulated = self.rediscombobulator(_source_array);
+		_randPos = self.get_random_pos_from(_rediscombobulated) % 2;
 
-		if(len(_output) <= self.length):
-			_special = self.get_specials(rand=True, inputLen=self.length);
-			_source_array = list(_output);
-			_rediscombobulated = self.rediscombobulator(_source_array);
-			_randPos = self.get_random_pos_from(_rediscombobulated);
-
-			for item in _special:
-				if(_randPos < len(_rediscombobulated)):
-					_rediscombobulated.pop(_randPos);
-
-				_rediscombobulated.insert(_randPos, item);
-
+		for it in reversed(_special):
 			_rediscombobulated.pop();
-			_output = "".join(_rediscombobulated);
+		
+		for item in _special:
+			_randPos = self.get_random_pos_from(_rediscombobulated);
+			_rediscombobulated.insert(_randPos, item);
+
+		_output = "".join(_rediscombobulated);
 
 		if(ret):
-			return _output;
+			return None;
 		else:
 			print _output;
 
