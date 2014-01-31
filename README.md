@@ -1,7 +1,7 @@
 PyPasswordr
 ===========
 
-A python variant of my (https://github.com/aapis/passwordr)[Passwordr] project.
+A python variant of my [Passwordr](https://github.com/aapis/passwordr) project.
 
 ## Usage
 
