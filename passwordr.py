@@ -46,7 +46,7 @@ class Passwordr(object):
 
 	"""chooses a random starting point for randomizer()'s string"""
 	def startmajigger(self):
-		seed = "123456789"; #todo: refactor so it takes the length of the password string instead of these random ints
+		seed = "123456789"; #todo: refactor so it takes the length of the password string instead of these random numbers
 
 		return "".join(random.sample(seed, len(seed)))[:1]
 
