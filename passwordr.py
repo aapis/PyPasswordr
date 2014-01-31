@@ -51,31 +51,33 @@ class Passwordr(object):
 
 		return str(final);
 
-	def get_special(self):
-		_seed = "_?+-.<?;:&#@";
+	"""Get a variable number of special characters (symbols)"""
+	def get_specials(self, num=1, rand=True, inputLen=10):
+		_seed = "_?+-~.<>^*$;:&#@";
+		_minNumberChars = 5;
 
-		return "".join(random.sample(_seed, len(_seed)))[:1];
+		if(rand):
+			num = random.randint(1, inputLen) - _minNumberChars;
 
+		return random.sample(_seed, len(_seed))[:num];
 
 	"""takes confusitizer()'s array and a new random character to it, depending on the length of the array"""
 	def rediscombobulator(self, source):
 		_unique = self.array_unique(source);
 
-		if(len(_unique) < self.length):
-			_diff = self.length - len(_unique);
-			_special = self.get_special();
-			if(_diff > 0):
-				_diff_chars = list(self.make_hash(_diff));
-				print len(_diff_chars), len(_unique)
-				_unique.insert(_diff, _special);
-				_unique.extend(_diff_chars);
-			else :
-				_unique.insert(self.get_random_pos_from(_unique), _special);
+		_diff = self.length - len(_unique);
+		#_special = self.get_specials(rand=True, inputLen=self.length);
+
+		if(_diff < 0):
+			_diff_chars = list(self.make_hash(_diff));
+			_unique.extend(_diff_chars);
 
 		return _unique;
 
+	"""Get a random position from the input string"""
 	def get_random_pos_from(self, _input):
-		return random.randint(1,len(_input)) + 1;
+		if(_input):
+			return random.randint(1,len(_input)) + 1;
 
 	"""turns output from randomizer() and rediscombobulator() into a string"""
 	def confusitizer(self, ret=False):
@@ -83,14 +85,20 @@ class Passwordr(object):
 		_rediscombobulated = list();
 
 		if(len(_output) <= self.length):
-			_special = self.get_special();
+			_special = self.get_specials(rand=True, inputLen=self.length);
 			_source_array = list(_output);
 			_rediscombobulated = self.rediscombobulator(_source_array);
-			_rediscombobulated.insert(self.get_random_pos_from(_rediscombobulated), _special);
+			_randPos = self.get_random_pos_from(_rediscombobulated);
+
+			for item in _special:
+				if(_randPos < len(_rediscombobulated)):
+					_rediscombobulated.pop(_randPos);
+
+				_rediscombobulated.insert(_randPos, item);
+
+			_rediscombobulated.pop();
 			_output = "".join(_rediscombobulated);
 
-
-		print len(_output)
 		if(ret):
 			return _output;
 		else:
