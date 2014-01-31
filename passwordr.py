@@ -1,8 +1,9 @@
 import sys, hashlib, time, random, string
 
 class Passwordr(object):
-	"""Initialize the class"""
 	def __init__(self, base="", length=32):
+		"""Initialize the class"""
+
 		super(Passwordr, self).__init__();
 
 		if(sys.argv[1]):
@@ -19,8 +20,9 @@ class Passwordr(object):
 
 		return self.confusitizer();
 
-	"""generate a new hash and return the string value"""
 	def make_hash(self, length=0):
+		"""generate a new hash and return the string value"""
+		
 		_str = hashlib.sha224(str(int(time.time()))).hexdigest();
 
 		if(length > 0 and len(_str) > length):
@@ -28,16 +30,18 @@ class Passwordr(object):
 
 		return _str;
 
-	"""get the unique values from an array"""
-	"""http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order"""
 	def array_unique(self, arr):
+		"""get the unique values from an array"""
+		"""http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order"""
+
 		_seen = set();
 		_seen_add = _seen.add;
 
 		return [_x for _x in arr if _x not in _seen and not _seen_add(_x)];
 
-	"""gets the ball rolling by taking a randomly generated string and running it through a hash generator (sha1 in this case)"""
 	def randomizer(self):
+		"""gets the ball rolling by taking a randomly generated string and running it through a hash generator (sha1 in this case)"""
+
 		seed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		_tmp = {
 			"shuffled": "".join(random.sample(seed, len(seed))),
@@ -51,8 +55,9 @@ class Passwordr(object):
 
 		return str(final);
 
-	"""Get a variable number of special characters (symbols)"""
 	def get_specials(self, num=1, rand=True, inputLen=10):
+		"""Get a variable number of special characters (symbols)"""
+
 		_seed = "_?+-~.<>^*$;:&#@";
 		_minNumberChars = 5;
 
@@ -61,8 +66,9 @@ class Passwordr(object):
 
 		return random.sample(_seed, len(_seed))[:num];
 
-	"""takes confusitizer()'s array and a new random character to it, depending on the length of the array"""
 	def rediscombobulator(self, source):
+		"""takes confusitizer()'s array and a new random character to it, depending on the length of the array"""
+
 		_unique = self.array_unique(source);
 
 		_diff = self.length - len(_unique);
@@ -74,13 +80,15 @@ class Passwordr(object):
 
 		return _unique;
 
-	"""Get a random position from the input string"""
 	def get_random_pos_from(self, _input):
+		"""Get a random position from the input string"""
+
 		if(_input):
 			return random.randint(1,len(_input)) + 1;
 
-	"""turns output from randomizer() and rediscombobulator() into a string"""
 	def confusitizer(self, ret=False):
+		"""turns output from randomizer() and rediscombobulator() into a string"""
+
 		_output = self.randomizer();
 		_rediscombobulated = list();
 
