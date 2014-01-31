@@ -21,7 +21,9 @@ class Passwordr(object):
 
 		self.password = self.makeHash();
 
-		print self.randomizer();
+		_test = self.randomizer();
+
+		print self.rediscombobulator(_test);
 
 	"""generate a new hash and return the string value"""
 	def makeHash(self):
@@ -46,11 +48,15 @@ class Passwordr(object):
 
 		final = (_tmp["shuffled"] + _tmp["hash"])[_tmp["start"]:(self.length + _tmp["start"])];
 
+		self.length = len(final);
+
 		return final;
 
 	"""takes confusitizer()'s array and adds some new random characters to it, depending on the length of the array"""
-	def rediscombobulator(self):
-		pass
+	def rediscombobulator(self, source):
+		_unique = self.array_unique(source);
+
+		print len(_unique);
 
 	"""chooses a random starting point for randomizer()'s string"""
 	def startmajigger(self):
