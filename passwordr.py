@@ -77,7 +77,7 @@ class Passwordr(object):
 			_special = self.get_special();
 			_source_array = list(_output);
 
-			if(False == _special in _source_array):
+			if(_special in _source_array):
 				print "nope"
 		
 		return _output;
