@@ -1,4 +1,5 @@
 import sys
+import fileinput
 import hashlib
 import time
 import random
@@ -7,16 +8,16 @@ import string
 #if __name__ == "__main__":
 class Passwordr(object):
 	"""Initialize the class"""
-	def __init__(self, base, length, salt):
+	def __init__(self, base, length=32):
 		super(Passwordr, self).__init__();
 
 		if(base):
 			self.base = base;
 
-		if(salt):
-			self.salt = salt;
-
-		self.length = length;
+		if(sys.argv[2]):
+			self.length = int(sys.argv[2]);
+		else:
+			self.length = length;
 
 		self.password = self.makeHash();
 
@@ -25,6 +26,14 @@ class Passwordr(object):
 	"""generate a new hash and return the string value"""
 	def makeHash(self):
 		return hashlib.sha224(str(int(time.time()))).hexdigest();
+
+	"""get the unique values from an array"""
+	"""http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order"""
+	def array_unique(self, arr):
+		_seen = set();
+		_seen_add = _seen.add;
+
+		return [_x for _x in array if _x not in _seen and not _seen_add(_x)];
 
 	"""gets the ball rolling by taking a randomly generated string and running it through a hash generator (sha1 in this case)"""
 	def randomizer(self):
@@ -35,8 +44,7 @@ class Passwordr(object):
 			"start": int(self.startmajigger()),
 		};
 
-		final = (_tmp["shuffled"] + _tmp["hash"])[_tmp["start"]:self.length];
-		#_tmp = self.makeHash();
+		final = (_tmp["shuffled"] + _tmp["hash"])[_tmp["start"]:(self.length + _tmp["start"])];
 
 		return final;
 
@@ -56,4 +64,4 @@ class Passwordr(object):
 
 			
 # Instantiate the Passwordr class
-pw = Passwordr('test', 32, "test2")
+pw = Passwordr('test', 10)

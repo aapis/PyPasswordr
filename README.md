@@ -6,7 +6,10 @@ A python variant of my (https://github.com/aapis/passwordr)[Passwordr] project.
 ## Usage
 
 ```python
-BASE_STRING = "whatever" #uses this as a salt, optional
+_arg = {
+	"base": "whatever", #uses this as a salt, optional
+	"length": 32,
+}
 
-python passwordr.py "BASE_STRING"
+python passwordr.py _arg["base"] _arg["length"]
 ```
