@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 import sys, hashlib, time, random, string
 
 class Passwordr(object):
